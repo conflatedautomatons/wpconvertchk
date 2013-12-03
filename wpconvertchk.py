@@ -5,6 +5,7 @@ from HTMLParser import HTMLParser
 site = "http://journeysofthefabulist.wordpress.com/"
 pages = set()
 visited = set()
+possibleOld = set()
 
 
 class LinkAndImgParser(HTMLParser):
@@ -23,13 +24,16 @@ class LinkAndImgParser(HTMLParser):
 					srcLink = attr[1]
 					if srcLink.find("fantasy") > 0:
 						print "Possible old image %s " % (srcLink) 
+						possibleOld.add(srcLink)
 
 
 parser = LinkAndImgParser()
 
 
 def checkPage(pageUrl):
-	print "Checking page %s " % (pageUrl)
+	#print "Checking page %s " % (pageUrl)
+	if len(visited) % 10 == 0:
+		print len(visited)
 	try:
 		uh = urlopen(pageUrl)
 		for line in uh:
@@ -40,10 +44,14 @@ def checkPage(pageUrl):
 			if not page in visited:
 				checkPage(page)
 	except Exception as f:
-		print "(Dodgy page choice) %s " % (f)
+		print "(Dodgy page choice) %s ... %s " % (pageUrl,f)
 		visited.add(pageUrl)
 
 
 checkPage(site)
 
+print "Visited %d pages"  % len(visited)
+print "Possible old images"
+for link in possibleOld:
+	print link
 
