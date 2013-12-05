@@ -63,7 +63,7 @@ class LinkAndImgParser(HTMLParser):
 				self.checkPage(page)
 		except Exception as f:
 			print "(Dodgy page choice) %s ... %s " % (pageUrl,f)
-			print traceback.format_exc()
+			#print traceback.format_exc()
 			self.visited.add(pageUrl)
 			if pageUrl in self.newPages:
 				self.newPages.remove(pageUrl)
